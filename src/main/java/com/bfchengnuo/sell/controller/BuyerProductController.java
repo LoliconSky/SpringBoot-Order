@@ -1,6 +1,5 @@
 package com.bfchengnuo.sell.controller;
 
-import com.bfchengnuo.sell.service.CategoryService;
 import com.bfchengnuo.sell.service.ProductService;
 import com.bfchengnuo.sell.vo.ProductVo;
 import com.bfchengnuo.sell.vo.ResultVo;
@@ -18,8 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("buyer/product")
 public class BuyerProductController {
-    @Autowired
-    private CategoryService categoryService;
     @Autowired
     private ProductService productService;
 

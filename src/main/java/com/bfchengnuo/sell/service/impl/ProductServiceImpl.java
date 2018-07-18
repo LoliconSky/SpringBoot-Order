@@ -1,7 +1,10 @@
 package com.bfchengnuo.sell.service.impl;
 
 import com.bfchengnuo.sell.dao.ProductInfoRepository;
+import com.bfchengnuo.sell.dto.CartDTO;
 import com.bfchengnuo.sell.enums.ProductStatusEnum;
+import com.bfchengnuo.sell.enums.ResultEnum;
+import com.bfchengnuo.sell.exception.SellException;
 import com.bfchengnuo.sell.po.ProductCategory;
 import com.bfchengnuo.sell.po.ProductInfo;
 import com.bfchengnuo.sell.service.CategoryService;
@@ -14,8 +17,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -47,6 +52,36 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductInfo save(ProductInfo productInfo) {
         return repository.save(productInfo);
+    }
+
+    @Override
+    @Transactional
+    public void increaseStock(List<CartDTO> cartDTOList) {
+
+    }
+
+    /**
+     * 根据购物车的商品和数量进行相应的减库存
+     * TODO 考虑到并发问题，欲采用 Redis 锁机制来规避
+     * @param cartDTOList 购物车（包含商品和数量的列表）
+     */
+    @Override
+    @Transactional
+    public void decreaseStock(List<CartDTO> cartDTOList) {
+        cartDTOList.forEach(cartDTO -> {
+            // repository.getOne(cartDTO.getProductId());
+            Optional<ProductInfo> optional = repository.findById(cartDTO.getProductId());
+            if (!optional.isPresent()) {
+                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            }
+            ProductInfo productInfo = optional.get();
+            Integer result = productInfo.getProductStock() - cartDTO.getProductQuantity();
+            if (result < 0) {
+                throw new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
+            }
+            productInfo.setProductStock(result);
+            repository.save(productInfo);
+        });
     }
 
     @Override

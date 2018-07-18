@@ -1,5 +1,6 @@
 package com.bfchengnuo.sell.service;
 
+import com.bfchengnuo.sell.dto.CartDTO;
 import com.bfchengnuo.sell.po.ProductInfo;
 import com.bfchengnuo.sell.vo.ProductVo;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,11 @@ public interface ProductService {
 
     ProductInfo save(ProductInfo productInfo);
 
-    // 加减库存
+    //加库存
+    void increaseStock(List<CartDTO> cartDTOList);
+
+    //减库存
+    void decreaseStock(List<CartDTO> cartDTOList);
 
     List<ProductVo> getProductList();
 }
