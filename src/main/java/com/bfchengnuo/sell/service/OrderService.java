@@ -19,4 +19,13 @@ public interface OrderService {
     OrderDTO finish(OrderDTO orderDTO);
 
     OrderDTO paid(OrderDTO orderDTO);
+
+    /**
+     * 判断传入的订单号与当前用户的 openid 是否相符，避免横向越权
+     * 如果不符会抛出异常，相符返回查到的 OrderDTO
+     * @param openid 用户的标识 openid
+     * @param orderId 要查询的订单号
+     * @return 相符返回查到的 OrderDTO
+     */
+    OrderDTO checkOrderOwner(String openid, String orderId);
 }

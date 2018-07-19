@@ -1,16 +1,15 @@
 package com.bfchengnuo.sell;
 
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class SellApplicationTests {
 
     @Test
     public void contextLoads() {
+        long a = 135482464L / 1024;
+        long b = 135482464L >> 10;
+        Assert.assertEquals(a,b);
     }
 
 }

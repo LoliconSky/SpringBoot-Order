@@ -13,9 +13,10 @@ public interface OrderMasterRepository extends JpaRepository<OrderMaster, String
 
     /**
      * 按照买家的 openId 来查询订单
-     * @param openId 买家微信的 openId
+     *
+     * @param openid   买家微信的 openId
      * @param pageable 分页条件
      * @return 分页数据
      */
-    Page<OrderMaster> findByBuyerOpenid(String openId,Pageable pageable);
+    Page<OrderMaster> findByBuyerOpenid(String openid, Pageable pageable);
 }

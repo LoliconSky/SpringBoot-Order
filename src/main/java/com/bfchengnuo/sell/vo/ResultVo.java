@@ -20,8 +20,17 @@ public class ResultVo<T> {
         this.data = data;
     }
 
-    public static ResultVo createBySuccess(Object data) {
+    private ResultVo(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public static <T> ResultVo<T> createBySuccess(T data) {
         return new ResultVo<>(0, "成功", data);
+    }
+
+    public static ResultVo createBySuccess() {
+        return new ResultVo<>(0, "成功");
     }
 
 }

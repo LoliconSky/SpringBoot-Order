@@ -55,17 +55,16 @@ public class OrderServiceImpl implements OrderService {
         String orderId = KeyUtil.genUniqueKey();
         // 保存订单项的信息
         for (OrderDetail orderDetail : orderDTO.getOrderDetailList()) {
-            ProductInfo productInfo;
-            try {
-                // 查询数量、价格等信息
-                productInfo = productInfoRepository.getOne(orderDetail.getProductId());
-            } catch (Exception e) {
+            // 查询数量、价格等信息; getOne 方法即使不存在也返回一个引用，而不是 null
+            Optional<ProductInfo> optional = productInfoRepository.findById(orderDetail.getProductId());
+            if (!optional.isPresent()) {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }
+            ProductInfo productInfo = optional.get();
 
             // 计算订单的总价
             orderAmount = productInfo.getProductPrice()
-                    .multiply(BigDecimal.valueOf(orderDetail.getProductQuantity()))
+                    .multiply(new BigDecimal(orderDetail.getProductQuantity().toString()))
                     .add(orderAmount);
 
             BeanUtils.copyProperties(productInfo, orderDetail);
@@ -75,9 +74,9 @@ public class OrderServiceImpl implements OrderService {
         }
         // 保存主订单
         OrderMaster orderMaster = new OrderMaster();
+        orderDTO.setOrderId(orderId);
         // 属性拷贝如果是 null 也会进行拷贝
         BeanUtils.copyProperties(orderDTO, orderMaster);
-        orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAmount);
         orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
         orderMaster.setPayStatus(PayStatusEnum.WAIT.getCode());
@@ -204,6 +203,23 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             log.error("【支付订单】 更新订单失败，orderId={}， payStatus={}", orderDTO.getOrderId(), orderDTO.getPayStatus());
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
+        }
+        return orderDTO;
+    }
+
+    /**
+     * 判断传入的订单号与当前用户的 openid 是否相符，避免横向越权
+     * 如果不符会抛出异常，相符返回查到的 OrderDTO
+     * @param openid 用户的标识 openid
+     * @param orderId 要查询的订单号
+     * @return 相符返回查到的 OrderDTO
+     */
+    @Override
+    public OrderDTO checkOrderOwner(String openid, String orderId) {
+        OrderDTO orderDTO = this.findOne(orderId);
+        if (!orderDTO.getBuyerOpenid().equals(openid)) {
+            log.error("【查询订单详情】 订单 openid 不相符，订单openid={}, 传入的openid={}", orderDTO.getBuyerOpenid(), openid);
+            throw new SellException(ResultEnum.ORDER_OWNER_ERROR);
         }
         return orderDTO;
     }
