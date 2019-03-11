@@ -210,6 +210,8 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 判断传入的订单号与当前用户的 openid 是否相符，避免横向越权
      * 如果不符会抛出异常，相符返回查到的 OrderDTO
+     * findOne 改用两个条件大概也可以
+     *
      * @param openid 用户的标识 openid
      * @param orderId 要查询的订单号
      * @return 相符返回查到的 OrderDTO

@@ -5,6 +5,8 @@
 - 日志的配置与使用
 - @DynamicUpdate使用
 - SpringDataJPA
+- 表单校验
+- json自定义格式化输出（订单），忽略null值输出
 
 ## 分页
 
