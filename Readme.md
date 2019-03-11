@@ -25,3 +25,6 @@ Pageable pageable = new PageRequest(pageIndex, pageSize, sort);
 ```
 
 其中，findAll 是已经默认实现的方法，接收一个 Pageable 类型的分页参数，PageRequest 间接实现了 Pageable
+
+## 微信登陆
+使用第三方 SDK 避免重复造轮子，由于个人公众号没有权限，所以未测试
