@@ -15,6 +15,7 @@ import com.bfchengnuo.sell.po.OrderMaster;
 import com.bfchengnuo.sell.po.ProductInfo;
 import com.bfchengnuo.sell.service.OrderService;
 import com.bfchengnuo.sell.service.ProductService;
+import com.bfchengnuo.sell.service.WechatPayService;
 import com.bfchengnuo.sell.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -47,6 +48,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderMasterRepository orderMasterRepository;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private WechatPayService payService;
 
     @Override
     @Transactional
@@ -155,7 +158,8 @@ public class OrderServiceImpl implements OrderService {
         productService.increaseStock(list);
         // 如果已支付，则退款
         if (orderDTO.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
-            // TODO 退款逻辑
+            // 退款逻辑, 大概还需要校验是否退款成功
+            payService.refund(orderDTO);
         }
         return orderDTO;
     }
