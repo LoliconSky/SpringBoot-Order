@@ -17,6 +17,7 @@ import com.bfchengnuo.sell.service.OrderService;
 import com.bfchengnuo.sell.service.ProductService;
 import com.bfchengnuo.sell.service.WechatPayService;
 import com.bfchengnuo.sell.utils.KeyUtil;
+import com.bfchengnuo.sell.websocket.WebSocket;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,8 @@ public class OrderServiceImpl implements OrderService {
     private ProductService productService;
     @Autowired
     private WechatPayService payService;
+    @Autowired
+    private WebSocket webSocket;
 
     @Override
     @Transactional
@@ -90,6 +93,13 @@ public class OrderServiceImpl implements OrderService {
                 .map(orderDetail -> new CartDTO(orderDetail.getProductId(), orderDetail.getProductQuantity()))
                 .collect(Collectors.toList());
         productService.decreaseStock(cartDTOList);
+
+        // 使用 websocket 推送消息
+        try {
+            webSocket.sendMessage("收到新的订单：".concat(orderId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return orderDTO;
     }
 
