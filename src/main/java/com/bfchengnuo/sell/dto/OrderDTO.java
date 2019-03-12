@@ -1,7 +1,11 @@
 package com.bfchengnuo.sell.dto;
 
+import com.bfchengnuo.sell.enums.OrderStatusEnum;
+import com.bfchengnuo.sell.enums.PayStatusEnum;
 import com.bfchengnuo.sell.po.OrderDetail;
+import com.bfchengnuo.sell.utils.EnumUtil;
 import com.bfchengnuo.sell.utils.serializer.Date2LongSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
@@ -50,13 +54,13 @@ public class OrderDTO {
 
     List<OrderDetail> orderDetailList;
 
-    // @JsonIgnore
-    // public OrderStatusEnum getOrderStatusEnum() {
-    //     return EnumUtil.getByCode(orderStatus, OrderStatusEnum.class);
-    // }
-    //
-    // @JsonIgnore
-    // public PayStatusEnum getPayStatusEnum() {
-    //     return EnumUtil.getByCode(payStatus, PayStatusEnum.class);
-    // }
+    @JsonIgnore
+    public OrderStatusEnum getOrderStatusEnum() {
+        return EnumUtil.getByCode(orderStatus, OrderStatusEnum.class);
+    }
+
+    @JsonIgnore
+    public PayStatusEnum getPayStatusEnum() {
+        return EnumUtil.getByCode(payStatus, PayStatusEnum.class);
+    }
 }

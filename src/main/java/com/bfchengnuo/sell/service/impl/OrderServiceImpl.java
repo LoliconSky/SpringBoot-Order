@@ -130,6 +130,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<OrderDTO> findList(Pageable pageable) {
+        Page<OrderMaster> page = orderMasterRepository.findAll(pageable);
+        List<OrderDTO> list = OrderMaster2OrderDTOConverter.convert(page.getContent());
+        return new PageImpl<>(list, pageable, page.getTotalElements());
+    }
+
+    @Override
     @Transactional
     public OrderDTO cancel(OrderDTO orderDTO) {
         // 判断订单状态

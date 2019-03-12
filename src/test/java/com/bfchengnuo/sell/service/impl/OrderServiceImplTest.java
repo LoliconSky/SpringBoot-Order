@@ -59,6 +59,35 @@ public class OrderServiceImplTest {
     }
 
     @Test
+    public void createMore() {
+        for (int i = 0; i < 10; i++) {
+            OrderDTO orderDTO = new OrderDTO();
+            orderDTO.setBuyerName("一条萤" + i);
+            orderDTO.setBuyerAddress("乡下");
+            orderDTO.setBuyerPhone("123456789012");
+            orderDTO.setBuyerOpenid(BUYER_OPENID);
+
+            //购物车
+            List<OrderDetail> orderDetailList = new ArrayList<>();
+            OrderDetail o1 = new OrderDetail();
+            o1.setProductId("123456");
+            o1.setProductQuantity(1);
+
+            OrderDetail o2 = new OrderDetail();
+            o2.setProductId("789654");
+            o2.setProductQuantity(2);
+
+            orderDetailList.add(o1);
+            orderDetailList.add(o2);
+
+            orderDTO.setOrderDetailList(orderDetailList);
+
+            OrderDTO result = orderService.create(orderDTO);
+            log.info("【创建订单】result={}", result);
+        }
+    }
+
+    @Test
     public void findOne() {
         OrderDTO orderDTO = orderService.findOne(ORDER_ID);
         System.out.println(orderDTO);
