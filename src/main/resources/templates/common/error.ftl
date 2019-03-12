@@ -15,7 +15,7 @@
                 <div class="alert alert-dismissable alert-danger">
                     <h4>
                         错误!
-                    </h4> <strong>${msg}</strong> 3 秒后自动跳转 <a href="${url}" class="alert-link">立即跳转</a>
+                    </h4> <strong>${msg!""}</strong> 3 秒后自动跳转 <a href="${url}" class="alert-link">立即跳转</a>
                 </div>
             </div>
         </div>

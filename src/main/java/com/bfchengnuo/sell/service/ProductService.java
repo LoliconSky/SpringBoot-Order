@@ -23,11 +23,33 @@ public interface ProductService {
 
     ProductInfo save(ProductInfo productInfo);
 
-    //加库存
+    /**
+     * 加库存
+     * @param cartDTOList
+     */
     void increaseStock(List<CartDTO> cartDTOList);
 
-    //减库存
+    /**
+     * 减库存
+     * @param cartDTOList
+     */
     void decreaseStock(List<CartDTO> cartDTOList);
 
     List<ProductVo> getProductList();
+
+    /**
+     * 上架
+     *
+     * @param productId
+     * @return
+     */
+    ProductInfo onSale(String productId);
+
+    /**
+     * 下架
+     *
+     * @param productId
+     * @return
+     */
+    ProductInfo offSale(String productId);
 }
