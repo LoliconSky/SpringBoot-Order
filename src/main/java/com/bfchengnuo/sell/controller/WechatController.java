@@ -81,6 +81,11 @@ public class WechatController {
         return "redirect:" + returnUrl + "?openid=" + openId;
     }
 
+    /**
+     * web 端使用二维码登陆，使用的是开放平台
+     * @param returnUrl
+     * @return
+     */
     @GetMapping("/qrAuthorize")
     public String qrAuthorize(@RequestParam("returnUrl") String returnUrl) {
         String url = projectUrlConfig.getWechatOpenAuthorize() + "/sell/wechat/qrUserInfo";
