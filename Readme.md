@@ -33,3 +33,28 @@ Pageable pageable = new PageRequest(pageIndex, pageSize, sort);
 
 使用 freemarker 等模板引擎，返回的 ModelAndView 中 View 的名字是可以带路径的。。。
 参考 WechatPayController
+
+## 其他
+测试在 SpringBoot 中使用 @Autowired 如果有两个相同的类型，在名字匹配的情况下也会注入成功，类似 @Resources
+
+参考：WechatController 这个类
+
+不明所以。。都不用使用 @Qualifier 了吗
+
+---
+
+关于 RequestContextHolder 对象，在 AOP 中使用的。
+
+> Spring Web 提供了一个工具类 RequestContextHolder用来在当前线程中暴露当前请求及其属性RequestAttributes。
+> 这样的话在整个请求处理过程中，在当前线程中通过此工具类就可以获取对象RequestAttributes，从而就可以访问当前请求及其属性。
+> RequestAttributes是一个接口，用于抽象一个请求的所有属性对象。
+
+``` java
+ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+HttpServletRequest request = attributes.getRequest();
+
+RequestContextHolder.getRequestAttributes();
+RequestContextHolder.currentRequestAttributes();
+```
+
+https://blog.csdn.net/andy_zhang2007/article/details/83269849
