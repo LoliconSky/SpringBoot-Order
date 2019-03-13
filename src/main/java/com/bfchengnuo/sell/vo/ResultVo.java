@@ -33,4 +33,11 @@ public class ResultVo<T> {
         return new ResultVo<>(0, "成功");
     }
 
+    public static ResultVo error(Integer code, String msg) {
+        ResultVo resultVO = new ResultVo();
+        resultVO.setCode(code);
+        resultVO.setMsg(msg);
+        return resultVO;
+    }
+
 }

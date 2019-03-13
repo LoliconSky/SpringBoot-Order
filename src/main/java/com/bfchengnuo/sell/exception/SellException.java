@@ -1,7 +1,9 @@
 package com.bfchengnuo.sell.exception;
 
 import com.bfchengnuo.sell.enums.ResultEnum;
+import lombok.Getter;
 
+@Getter
 public class SellException extends RuntimeException{
 
     private Integer code;

@@ -105,6 +105,22 @@ public class WebSocket {
 
 WebSocket 实质上借用 HTTP 请求进行握手
 
+## 使用缓存
+导入 springboot 的 cache 依赖，在需要缓存的方法上使用 `@Cacheable(cacheNames="name", key="123")` 注解，如果执行某一个方法需要刷新缓存，就使用 `@CachePut(cacheNames="name", key="123")` 这个注解，保证 name 和 key 一致就可以刷新缓存。
+另外，也可以使用 `@CacheEvict(cacheNames="name", key="123")` 注解来失效缓存。
+
+key 如果省略不写默认是方法的参数，为简化代码，可以在类上使用 `@CacheConfig(cacheNames="name")` 来抽取公共部分。
+
+还可以使用 condition、unless 属性用表达式来限制满足指定条件时才缓存。
+
+默认使用的是 SimpleCacheConfiguration，即使用 ConcurrentMapCacheManager 来实现缓存。
+
+但是例如，如果项目引入了 Redis，那么缓存的数据（方法的返回值）就会序列化到 Redis 进行存储，下次调用就不会再进方法了。
+
+也就是：Spring Boot 会在侦测到存在 Redis 的依赖并且 Redis 的配置是可用的情况下，使用 RedisCacheManager 初始化 CacheManager。
+
+https://my.oschina.net/u/3452433/blog/1831026
+
 ## 其他
 测试在 SpringBoot 中使用 @Autowired 如果有两个相同的类型，在名字匹配的情况下也会注入成功，类似 @Resources
 

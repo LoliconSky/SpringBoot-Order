@@ -39,3 +39,8 @@ project-url:
   wechatMpAuthorize: http://localhost:8080
   wechatOpenAuthorize: http://sell.natapp4.cc
   sell: http://sell.natapp4.cc
+
+# mybatis 设置日志输出可以这么搞
+logging:
+  level:
+    com.bfchengnuo.sell.dao: debug
