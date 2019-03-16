@@ -8,6 +8,8 @@
 - 表单校验
 - json自定义格式化输出（订单），忽略null值输出
 
+前端 Vue 构建源码：https://github.com/ustbhuangyi/vue-sell
+
 ## 分页
 
 示例代码：
